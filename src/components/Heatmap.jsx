@@ -1,13 +1,11 @@
 import { dateKey } from '../dateKey'
 
 const WEEKDAY_LABELS = ['日', '一', '二', '三', '四', '五', '六']
+const MAX_SECONDS = 8 * 3600
 
-function level(seconds, goalSeconds) {
+function level(seconds) {
   if (seconds <= 0) return 0
-  const ratio = seconds / goalSeconds
-  if (ratio >= 1) return 3
-  if (ratio >= 0.5) return 2
-  return 1
+  return Math.min(9, Math.ceil(seconds / MAX_SECONDS * 9))
 }
 
 export default function Heatmap({ history, goalMinutes }) {
@@ -52,7 +50,8 @@ export default function Heatmap({ history, goalMinutes }) {
               }
               const key = dateKey(d)
               const seconds = history[key] || 0
-              const lvl = level(seconds, goalSeconds)
+              const lvl = level(seconds)
+              const goalReached = seconds >= goalSeconds
               const isToday = dateKey(d) === dateKey(today)
               return (
                 <div
@@ -60,7 +59,7 @@ export default function Heatmap({ history, goalMinutes }) {
                   className={`heatmap-cell level-${lvl}${isToday ? ' heatmap-cell-today' : ''}`}
                   title={`${key} · ${Math.round(seconds / 60)} 分钟`}
                 >
-                  {d.getDate()}
+                  {goalReached ? '✓' : d.getDate()}
                 </div>
               )
             })}
@@ -69,11 +68,10 @@ export default function Heatmap({ history, goalMinutes }) {
       </div>
       <div className="heatmap-legend">
         <span>少</span>
-        <span className="heatmap-cell level-0" />
-        <span className="heatmap-cell level-1" />
-        <span className="heatmap-cell level-2" />
-        <span className="heatmap-cell level-3" />
-        <span>达标</span>
+        {Array.from({ length: 10 }, (_, i) => (
+          <span key={i} className={`heatmap-cell level-${i}`} />
+        ))}
+        <span>8h</span>
       </div>
     </div>
   )

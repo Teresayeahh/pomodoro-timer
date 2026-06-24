@@ -320,9 +320,15 @@ body {
   box-shadow: 0 0 0 1px var(--accent) inset;
 }
 
-.heatmap-cell.level-1 { background: #5c3d42; }
-.heatmap-cell.level-2 { background: #a13c4a; }
-.heatmap-cell.level-3 { background: var(--accent); }
+.heatmap-cell.level-1 { background: #321a1f; }
+.heatmap-cell.level-2 { background: #4a1e27; }
+.heatmap-cell.level-3 { background: #62242f; }
+.heatmap-cell.level-4 { background: #7a2a37; }
+.heatmap-cell.level-5 { background: #933040; }
+.heatmap-cell.level-6 { background: #ac3649; }
+.heatmap-cell.level-7 { background: #c33c52; }
+.heatmap-cell.level-8 { background: #d8424a; }
+.heatmap-cell.level-9 { background: var(--accent); }
 
 .heatmap-legend {
   display: flex;

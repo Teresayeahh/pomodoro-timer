@@ -1,5 +1,11 @@
 const { app, BrowserWindow, ipcMain, Notification, nativeImage } = require('electron')
 const path = require('path')
+const os = require('os')
+
+// Unify userData across dev and packaged builds so data is never lost on reinstall
+if (process.platform === 'darwin') {
+  app.setPath('userData', path.join(os.homedir(), 'Library', 'Application Support', '番茄钟'))
+}
 
 let mainWindow
 

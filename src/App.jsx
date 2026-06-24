@@ -250,9 +250,11 @@ export default function App() {
             <FocusProgress todaySeconds={history[dateKey()] || 0} goalMinutes={cfg.focusGoal} />
           )}
 
-          <button className="heatmap-link" onClick={() => setView('heatmap')}>
-            📅 查看专注热力图
-          </button>
+          {mode === 'pomodoro' && (
+            <button className="heatmap-link" onClick={() => setView('heatmap')}>
+              📅 查看专注热力图
+            </button>
+          )}
         </>
       )}
 

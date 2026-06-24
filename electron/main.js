@@ -1,7 +1,6 @@
 const { app, BrowserWindow, ipcMain, Notification, nativeImage } = require('electron')
 const path = require('path')
 const os = require('os')
-const fs = require('fs')
 
 // Unify userData across dev and packaged builds so data is never lost on reinstall
 if (process.platform === 'darwin') {
@@ -45,25 +44,6 @@ app.whenReady().then(() => {
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') app.quit()
-})
-
-// File-based focus history — shared across dev and packaged builds
-function historyPath() {
-  return path.join(app.getPath('userData'), 'focus-history.json')
-}
-
-ipcMain.on('history:read', (e) => {
-  try {
-    e.returnValue = JSON.parse(fs.readFileSync(historyPath(), 'utf8'))
-  } catch {
-    e.returnValue = {}
-  }
-})
-
-ipcMain.on('history:save', (_, data) => {
-  try {
-    fs.writeFileSync(historyPath(), JSON.stringify(data))
-  } catch {}
 })
 
 ipcMain.on('notify', (_, { title, body }) => {

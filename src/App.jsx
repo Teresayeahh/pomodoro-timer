@@ -61,19 +61,6 @@ export default function App() {
   const [showSettings, setShowSettings] = useState(false)
   const [view, setView] = useState('timer')
   const [history, setHistory] = useState(() => {
-    if (window.electronAPI?.readHistory) {
-      const fileData = window.electronAPI.readHistory()
-      if (Object.keys(fileData).length > 0) return fileData
-      // first run: migrate from localStorage (dev mode origin) to file
-      try {
-        const lsData = JSON.parse(localStorage.getItem('pomodoro-history')) || {}
-        if (Object.keys(lsData).length > 0) {
-          window.electronAPI.saveHistory(lsData)
-          return lsData
-        }
-      } catch {}
-      return fileData
-    }
     try {
       return JSON.parse(localStorage.getItem('pomodoro-history')) || {}
     } catch {
@@ -85,11 +72,7 @@ export default function App() {
     const key = dateKey()
     setHistory(h => {
       const next = { ...h, [key]: (h[key] || 0) + seconds }
-      if (window.electronAPI?.saveHistory) {
-        window.electronAPI.saveHistory(next)
-      } else {
-        try { localStorage.setItem('pomodoro-history', JSON.stringify(next)) } catch {}
-      }
+      try { localStorage.setItem('pomodoro-history', JSON.stringify(next)) } catch {}
       return next
     })
   }
